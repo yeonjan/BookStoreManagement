@@ -42,6 +42,11 @@ public class BookController extends HttpServlet {
 					getdetailBook(request, response);
 					break;
 
+				case "delete":
+					deleteBook(request, response);
+
+					break;
+
 				default:
 					break;
 				}
@@ -52,6 +57,14 @@ public class BookController extends HttpServlet {
 		}
 
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	// 도서 삭제
+	private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+		String isbn = request.getParameter("isbn");
+		int cnt = bookService.deleteBookByIsbn(isbn);
+		response.sendRedirect(request.getContextPath() + "/book?action=list");
+
 	}
 
 	// 도서 상세조회
@@ -66,7 +79,7 @@ public class BookController extends HttpServlet {
 	}
 
 	// 도서 등록
-	private void registBook(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+	private void registBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		System.out.println("registBook 요청 확인");
 
 		Book book = new Book();
@@ -76,12 +89,7 @@ public class BookController extends HttpServlet {
 		book.setPrice(Integer.parseInt(request.getParameter("price")));
 
 		bookService.registBook(book);
-		try {
-			response.sendRedirect(request.getContextPath() + "/book?action=list");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		response.sendRedirect(request.getContextPath() + "/book?action=list");
 	}
 
 	// 도서 리스트 조회

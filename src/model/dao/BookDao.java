@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-
 import dto.Book;
 import util.DBUtil;
 
@@ -25,6 +23,25 @@ public class BookDao {
 	}
 
 	DBUtil dbUtil = DBUtil.getInstance();
+
+	// isbn에 맞는 도서 삭제
+	public int deleteBookByIsbn(String isbn) throws SQLException {
+		String sql = "delete from book where isbn=" + isbn;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			int cnt = pstmt.executeUpdate();
+
+			return cnt;
+
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+	}
 
 	// isbn에 맞는 도서 찾기
 	public Book getBookByIsbn(String isbn) throws SQLException {

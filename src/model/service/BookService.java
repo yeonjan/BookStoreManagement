@@ -19,6 +19,12 @@ public class BookService {
 
 	BookDao bookDao = BookDao.getInstance();
 
+	// isbn에 맞는 도서 삭제
+	public int deleteBookByIsbn(String isbn) throws SQLException {
+		return bookDao.deleteBookByIsbn(isbn);
+
+	}
+
 	// isbn에 맞는 도서 찾기
 	public Book getBookByIsbn(String isbn) throws SQLException {
 		return bookDao.getBookByIsbn(isbn);
@@ -35,4 +41,5 @@ public class BookService {
 	public List<Book> getBookList() throws SQLException {
 		return bookDao.selectBookList();
 	}
+
 }
