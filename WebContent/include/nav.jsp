@@ -26,7 +26,7 @@
             <c:otherwise>
                 <ul class="nav navbar-nav navbar-right">
       				<li><a href="#"><span class="glyphicon glyphicon-user"></span> My Page</a></li>
-      				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      				<li><a href="${root}/user?action=logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     			</ul>
             </c:otherwise>
       </c:choose>

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.mysql.cj.Session;
+
 import dto.User;
 import model.service.UserService;
 
@@ -33,6 +35,9 @@ public class UserController extends HttpServlet {
 				case "login":
 					login(request, response);
 					break;
+				case "logout":
+					logout(request, response);
+					break;
 				default:
 					break;
 				}
@@ -42,6 +47,14 @@ public class UserController extends HttpServlet {
 
 		}
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	//로그아웃
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		session.removeAttribute("userInfo");
+		response.sendRedirect(request.getContextPath());
+		
 	}
 
 	// 로그인
