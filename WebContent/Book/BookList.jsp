@@ -7,30 +7,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
-	window.onload=function(){
-		let deleteBtns=document.querySelectorAll(".deleteBtn");
-		//console.log(deleteBtns)
-		
-		deleteBtns.forEach(function(el){
-			//console.log(el);
-			
-			el.addEventListener("click",function(e){
-				console.log(e);
-				e.preventDefault();
-				//console.log(this);
-				let isbn = el.parentNode.parentNode.children[0].innerText; //el==this 
-				if(confirm("선택한 도서를 삭제하시겠습니까?")){
-					location.href="${root}/book?action=delete&isbn="+isbn;
-				}
-				
-			})
-			
-		})
-		
-		
-		
+	function deleteBtnClick(isbn){
+		if(confirm("선택한 도서를 삭제하시겠습니까?")){
+			location.href="${root}/book?action=delete&isbn="+isbn;
+		}
 	}
-
 </script>
 </head>
 <body>
@@ -53,7 +34,7 @@
         <td><a href="${root}/book?action=detail&isbn=${list.isbn}">${list.title}</a></td>
         <td>${list.author}</td>
         <td>${list.price}</td>
-        <td><a class ="deleteBtn" href=""> 삭제</a></td>
+        <td><button onclick="deleteBtnClick(${list.isbn})" >삭제</button>
       </tr>
     </c:forEach>
   </table>
