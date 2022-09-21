@@ -26,6 +26,37 @@ public class BookDao {
 
 	DBUtil dbUtil = DBUtil.getInstance();
 
+	// isbn에 맞는 도서 찾기
+	public Book getBookByIsbn(String isbn) throws SQLException {
+		String sql = "select * from book where isbn=" + isbn;
+
+		Book findBook = new Book();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				findBook.setIsbn(rs.getString(1));
+				findBook.setTitle(rs.getString(2));
+				findBook.setAuthor(rs.getString(3));
+				findBook.setPrice(Integer.parseInt(rs.getString(4)));
+				findBook.setDescription(rs.getString(5));
+				findBook.setImg(rs.getString(6));
+
+			}
+			return findBook;
+
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
+		}
+	}
+
 	// 도서 정보 등록
 	public int insertBook(Book book) throws SQLException {
 		System.out.println(book);

@@ -24,31 +24,45 @@ public class BookController extends HttpServlet {
 		if (action == null)
 			response.sendRedirect("");
 		else {
-			switch (action) {
-			case "list":
-				try {
+			try {
+				switch (action) {
+				case "list":
 					getBookList(request, response);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				break;
-			case "goRegist":
-				request.getRequestDispatcher("/Book/BookRegist.jsp").forward(request, response);
-				break;
-			case "regist":
-				try {
+					break;
+
+				case "goRegist":
+					request.getRequestDispatcher("/Book/BookRegist.jsp").forward(request, response);
+					break;
+
+				case "regist":
 					registBook(request, response);
-				} catch (SQLException e) {
-					e.printStackTrace();
+					break;
+
+				case "detail":
+					getdetailBook(request, response);
+					break;
+
+				default:
+					break;
 				}
-				break;
-			default:
-				break;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
 		}
 
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	// 도서 상세조회
+	private void getdetailBook(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		String isbn = request.getParameter("isbn");
+		Book findbook = bookService.getBookByIsbn(isbn);
+
+		request.setAttribute("findBook", findbook);
+		request.getRequestDispatcher("/Book/BookDetail.jsp").forward(request, response);
+
 	}
 
 	// 도서 등록

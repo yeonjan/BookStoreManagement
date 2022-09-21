@@ -9,7 +9,7 @@
 </head>
 <body>
 	<%@ include file="/include/nav.jsp" %>
-<h1>도서 목록 조회</h1>
+<h1>제목</h1>
 <table class="table">
     <thead>
       <tr>
@@ -17,17 +17,21 @@
         <th>제목</th>
         <th>저자</th>
         <th>가격</th>
+        <th>내용</th>
+        <th>이미지</th>
       </tr>
     </thead>
     <tbody>
-    <c:forEach var="list" items="${requestScope.list}">
+    <c:set var="book" value ="${requestScope.findBook}"></c:set>
       <tr>
-        <td>${list.isbn}</td>
-        <td><a href="${root}/book?action=detail&isbn=${list.isbn}">${list.title}</a></td>
-        <td>${list.author}</td>
-        <td>${list.price}</td>
+        <td>${book.isbn}</td>
+        <td>${book.title}</td>
+        <td>${book.author}</td>
+        <td>${book.price}</td>
+        <td>${book.description}</td>
+        <td>${book.img}</td>
       </tr>
-    </c:forEach>
+   
   </table>
   <%@ include file="/include/footer.jsp" %>
 </body>
