@@ -8,7 +8,7 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="${root}">Home</a></li>
       <li class="active"><a href="${root}/book?action=list">List</a></li>
-      <li class="active"><a href="#">Regist</a></li>
+      <li class="active"><a href="${root}/book?action=goRegist">Regist</a></li>
     </ul>
     
     <ul class="nav navbar-nav navbar-right">

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -25,9 +26,22 @@ public class BookController extends HttpServlet {
 		else {
 			switch (action) {
 			case "list":
-				getBookList(request, response);
+				try {
+					getBookList(request, response);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				break;
-
+			case "goRegist":
+				request.getRequestDispatcher("/Book/BookRegist.jsp").forward(request, response);
+				break;
+			case "regist":
+				try {
+					registBook(request, response);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
 			default:
 				break;
 			}
@@ -37,11 +51,31 @@ public class BookController extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
+	// 도서 등록
+	private void registBook(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+		System.out.println("registBook 요청 확인");
+
+		Book book = new Book();
+		book.setIsbn(request.getParameter("isbn"));
+		book.setTitle(request.getParameter("title"));
+		book.setAuthor(request.getParameter("author"));
+		book.setPrice(Integer.parseInt(request.getParameter("price")));
+
+		bookService.registBook(book);
+		try {
+			response.sendRedirect(request.getContextPath() + "/book?action=list");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	// 도서 리스트 조회
-	private void getBookList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void getBookList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException, SQLException {
 
 		List<Book> bookList = bookService.getBookList();
-		
+
 		request.setAttribute("list", bookList);
 		request.getRequestDispatcher("/Book/BookList.jsp").forward(request, response);
 
@@ -49,7 +83,7 @@ public class BookController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		request.setCharacterEncoding("UTF-8");
 		doGet(request, response);
 	}
 

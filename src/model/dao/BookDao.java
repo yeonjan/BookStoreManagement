@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 
 import dto.Book;
 import util.DBUtil;
@@ -25,8 +26,34 @@ public class BookDao {
 
 	DBUtil dbUtil = DBUtil.getInstance();
 
-	// 책목록 조회
-	public List<Book> selectBookList() {
+	// 도서 정보 등록
+	public int insertBook(Book book) throws SQLException {
+		System.out.println(book);
+		String sql = "insert into book (isbn,title,author,price) values (?,?,?,?)";
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = dbUtil.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, book.getIsbn());
+			pstmt.setString(2, book.getTitle());
+			pstmt.setString(3, book.getAuthor());
+			pstmt.setInt(4, book.getPrice());
+
+			int cnt = pstmt.executeUpdate();
+			return cnt;
+
+		} finally {
+			dbUtil.close(pstmt, conn);
+		}
+
+	}
+
+	// 도서 목록 조회
+	public List<Book> selectBookList() throws SQLException {
 
 		String sql = "select isbn,title,author,price from book";
 
@@ -51,10 +78,11 @@ public class BookDao {
 				bookList.add(book);
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+			return bookList;
+
+		} finally {
+			dbUtil.close(rs, pstmt, conn);
 		}
-		return bookList;
 
 	}
 
