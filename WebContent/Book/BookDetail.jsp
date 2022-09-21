@@ -9,7 +9,8 @@
 </head>
 <body>
 	<%@ include file="/include/nav.jsp" %>
-<h1>제목</h1>
+	<c:set var="book" value ="${requestScope.findBook}"></c:set>
+<h1>${book.title}</h1>
 <table class="table">
     <thead>
       <tr>
